@@ -7,7 +7,10 @@
 <body>
     <?php require "parts/header.php" ?>
     <h1>CodeHub - forum pre programatorov</h1>
+
     <?php require "parts/footer.php" ?>
+
+
 </body>
 </html>
 <script>
