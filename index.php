@@ -5,12 +5,9 @@
     <title>CodeHub</title>
 </head>
 <body>
-    <header>
-
-    </header>
-    <footer>
-
-    </footer>
+    <?php require "parts/header.php" ?>
+    <?php require "parts/header.php" ?>
+    <h1>CodeHub - forum pre programatorov</h1>
 </body>
 </html>
 <script>
