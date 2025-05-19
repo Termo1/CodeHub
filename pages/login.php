@@ -9,7 +9,7 @@ Session::start();
 
 // Check if user is already logged in
 if (Session::isLoggedIn()) {
-    header('Location: index.php');
+    header('Location: /codehub/index.php');
     exit;
 }
 
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             Session::setUserLoggedIn($user);
             
             // Redirect to index page
-            header('Location: index.php');
+            header('Location: /codehub/index.php');
             exit;
         } else {
             $error = 'Invalid username or password';

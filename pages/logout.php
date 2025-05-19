@@ -1,5 +1,5 @@
 <?php
-require_once '..db/classes/Session.php';
+require_once '../db/classes/Session.php';
 
 // Start session
 Session::start();
@@ -8,5 +8,5 @@ Session::start();
 Session::destroy();
 
 // Redirect to login page
-header('Location: index.php');
+header('Location: http://localhost/codehub/index.php');
 exit;
