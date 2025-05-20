@@ -106,12 +106,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <input type="password" class="form-control" id="password" name="password" required>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="1" id="remember" name="remember">
-                                        <label class="form-check-label" for="remember">
-                                            Remember me
-                                        </label>
-                                    </div>
                                     <a href="forgot-password.php">Forgot password?</a>
                                 </div>
                                 <button type="submit" class="btn btn-primary w-100">Login</button>
