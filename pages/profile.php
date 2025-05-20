@@ -2,6 +2,8 @@
 require_once '../config/Database.php';
 require_once '../db/classes/User.php';
 require_once '../db/classes/Session.php';
+//require_once '../db/classes/Topic.php';
+//require_once '../db/classes/Post.php';
 
 // Start session
 Session::start();
@@ -33,46 +35,13 @@ if (!$profile) {
 $user->user_id = $user_id;
 $stats = $user->getUserStats();
 
-// Placeholder data for recent activity (in a real app, this would come from the database)
-$recent_topics = [
-    [
-        'id' => 1,
-        'title' => 'How to optimize MySQL queries for large datasets?',
-        'created_at' => '2025-05-15 14:30:22',
-        'forum' => 'Database Development'
-    ],
-    [
-        'id' => 2,
-        'title' => 'Best practices for React component architecture',
-        'created_at' => '2025-05-12 09:15:43',
-        'forum' => 'JavaScript'
-    ]
-];
+// Get recent topics
+// $topic = new Topic($db);
+// $recent_topics = $topic->getRecentTopicsByUser($user_id, 2);
 
-$recent_posts = [
-    [
-        'id' => 1,
-        'topic_id' => 3,
-        'topic_title' => 'Implementing JWT authentication in a PHP application',
-        'content' => 'I recommend using Firebase JWT library. It\'s very reliable and easy to use.',
-        'created_at' => '2025-05-17 10:42:18'
-    ],
-    [
-        'id' => 2,
-        'topic_id' => 4,
-        'topic_title' => 'Python vs PHP for web development in 2025',
-        'content' => 'In my experience, PHP is still very relevant especially with modern frameworks like Laravel and Symfony.',
-        'created_at' => '2025-05-16 16:22:05'
-    ],
-    [
-        'id' => 3,
-        'topic_id' => 5,
-        'topic_title' => 'Docker setup for PHP development',
-        'content' => 'Here\'s a basic docker-compose.yml file I use for my PHP projects...',
-        'created_at' => '2025-05-14 11:09:37'
-    ]
-];
-
+// Get recent posts
+// $post = new Post($db);
+// $recent_posts = $post->getRecentPostsByUser($user_id, 3);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -92,10 +61,9 @@ $recent_posts = [
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-3 text-center">
-                                    <img src="<?php echo htmlspecialchars($profile['avatar'] ?? '/assets/images/default_avatar.png'); ?>" 
-                                         alt="<?php echo htmlspecialchars($profile['username']); ?>" 
-                                         class="img-fluid rounded-circle mb-3" 
-                                         style="width: 150px; height: 150px; object-fit: cover;">
+                                    <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 150px; height: 150px; font-size: 64px;">
+                                        <?php echo strtoupper(substr($profile['username'], 0, 1)); ?>
+                                    </div>
                                     
                                     <?php if (Session::get('user_id') == $user_id): ?>
                                         <a href="settings.php" class="btn btn-sm btn-outline-primary">
@@ -213,14 +181,14 @@ $recent_posts = [
                             <?php else: ?>
                                 <div class="list-group list-group-flush">
                                     <?php foreach ($recent_topics as $topic): ?>
-                                        <a href="topic.php?id=<?php echo $topic['id']; ?>" class="list-group-item list-group-item-action">
+                                        <a href="topic.php?id=<?php echo $topic['topic_id']; ?>" class="list-group-item list-group-item-action">
                                             <div class="d-flex w-100 justify-content-between">
                                                 <h6 class="mb-1"><?php echo htmlspecialchars($topic['title']); ?></h6>
                                                 <small class="text-muted"><?php echo date('M d, Y', strtotime($topic['created_at'])); ?></small>
                                             </div>
                                             <small class="text-muted">
                                                 <i class="fas fa-folder me-1"></i> 
-                                                <?php echo htmlspecialchars($topic['forum']); ?>
+                                                <?php echo htmlspecialchars($topic['forum_name']); ?>
                                             </small>
                                         </a>
                                     <?php endforeach; ?>
@@ -256,7 +224,7 @@ $recent_posts = [
                                             </div>
                                             <p class="mb-1"><?php echo htmlspecialchars(substr($post['content'], 0, 150)) . (strlen($post['content']) > 150 ? '...' : ''); ?></p>
                                             <small class="text-muted">
-                                                <a href="topic.php?id=<?php echo $post['topic_id']; ?>#post-<?php echo $post['id']; ?>" class="text-decoration-none">
+                                                <a href="topic.php?id=<?php echo $post['topic_id']; ?>#post-<?php echo $post['post_id']; ?>" class="text-decoration-none">
                                                     <i class="fas fa-external-link-alt me-1"></i>View Full Post
                                                 </a>
                                             </small>

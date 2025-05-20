@@ -59,7 +59,6 @@ class Session {
         self::set('username', $user->username);
         self::set('email', $user->email);
         self::set('role', $user->role);
-        self::set('avatar', $user->avatar);
     }
     
     /**

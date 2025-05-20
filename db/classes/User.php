@@ -12,7 +12,6 @@ class User {
     public $username;
     public $email;
     public $password;
-    public $avatar;
     public $bio;
     public $signature;
     public $role;
@@ -89,7 +88,6 @@ class User {
                 $this->user_id = $row['user_id'];
                 $this->username = $row['username'];
                 $this->email = $row['email'];
-                $this->avatar = $row['avatar'];
                 $this->bio = $row['bio'];
                 $this->signature = $row['signature'];
                 $this->role = $row['role'];
@@ -221,23 +219,6 @@ class User {
         
         // Execute query
         if($stmt->execute()) {
-            return true;
-        }
-        
-        return false;
-    }
-    
-    /**
-     * Update user avatar
-     */
-    public function updateAvatar($avatar_path) {
-        $query = "UPDATE " . $this->table . " SET avatar = :avatar WHERE user_id = :user_id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':avatar', $avatar_path);
-        $stmt->bindParam(':user_id', $this->user_id);
-        
-        if($stmt->execute()) {
-            $this->avatar = $avatar_path;
             return true;
         }
         
