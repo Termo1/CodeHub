@@ -217,18 +217,9 @@ if (Session::hasFlash('success')) {
             <div class="card shadow mb-5 info-topic">
                 <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
                     <h4 class="mb-0">
-                        <?php if ($topic['is_sticky']): ?>
-                            <i class="fas fa-thumbtack me-2 text-warning"></i>
-                        <?php endif; ?>
                         <?php echo htmlspecialchars($topic['title']); ?>
                     </h4>
                     <div>
-                        <?php if ($topic['is_sticky']): ?>
-                            <span class="badge bg-warning text-dark me-2">Sticky</span>
-                        <?php endif; ?>
-                        <?php if ($topic['is_locked']): ?>
-                            <span class="badge bg-secondary me-2">Locked</span>
-                        <?php endif; ?>
                         <span class="badge bg-info"><?php echo number_format($topic['view_count']); ?> views</span>
                     </div>
                 </div>
@@ -257,11 +248,6 @@ if (Session::hasFlash('success')) {
                                         <?php if (Session::get('user_id') == $topic['user_id'] || Session::isModerator()): ?>
                                             <li><a class="dropdown-item" href="edit-topic.php?id=<?php echo $topic_id; ?>">Edit Topic</a></li>
                                             <li><a class="dropdown-item text-danger" href="delete-topic.php?id=<?php echo $topic_id; ?>">Delete Topic</a></li>
-                                        <?php endif; ?>
-                                        <?php if (Session::isModerator()): ?>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item" href="admin/toggle-sticky.php?id=<?php echo $topic_id; ?>&return=topic"><?php echo $topic['is_sticky'] ? 'Unsticky' : 'Sticky'; ?></a></li>
-                                            <li><a class="dropdown-item" href="admin/toggle-lock.php?id=<?php echo $topic_id; ?>&return=topic"><?php echo $topic['is_locked'] ? 'Unlock' : 'Lock'; ?></a></li>
                                         <?php endif; ?>
                                     </ul>
                                 </div>
@@ -397,17 +383,7 @@ if (Session::hasFlash('success')) {
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer bg-light d-flex justify-content-between">
-                        
-                        <div>
-                            <span class="text-muted small">
-                                <i class="fas fa-thumbs-up me-1"></i>0
-                            </span>
-                            <span class="text-muted small ms-3">
-                                <i class="fas fa-thumbs-down me-1"></i>0
-                            </span>
-                        </div>
-                    </div>
+                    
                 </div>
             <?php endforeach; ?>
             

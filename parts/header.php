@@ -23,12 +23,6 @@ Session::start();
                     <li class="nav-item">
                         <a class="nav-link" href="/codehub/pages/topics.php">Recent Topics</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/codehub/pages/members.php">Members</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/codehub/pages/about.php">About</a>
-                    </li>
                 </ul>
                 
                 <div class="d-flex">
@@ -41,7 +35,6 @@ Session::start();
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <li><a class="dropdown-item" href="/codehub/pages/profile.php"><i class="fas fa-user me-2"></i>My Profile</a></li>
                                 <li><a class="dropdown-item" href="/codehub/pages/my-topics.php"><i class="fas fa-list me-2"></i>My Topics</a></li>
-                                <li><a class="dropdown-item" href="/codehub/pages/notifications.php"><i class="fas fa-bell me-2"></i>Notifications</a></li>
                                 <li><a class="dropdown-item" href="/codehub/pages/settings.php"><i class="fas fa-cog me-2"></i>Settings</a></li>
                                 <?php if (Session::get('role') === 'admin' || Session::get('role') === 'moderator'): ?>
                                 <li><hr class="dropdown-divider"></li>
