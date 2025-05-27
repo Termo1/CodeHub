@@ -214,7 +214,7 @@ if (Session::hasFlash('success')) {
             <?php endif; ?>
             
             <!-- Topic Info Box -->
-            <div class="card shadow mb-4">
+            <div class="card shadow mb-5 info-topic">
                 <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
                     <h4 class="mb-0">
                         <?php if ($topic['is_sticky']): ?>

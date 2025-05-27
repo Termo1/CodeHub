@@ -326,32 +326,9 @@ if (Session::hasFlash('success')) {
                         </div>
                     </div>
                     
-                    <!-- Forum Moderators -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header bg-dark text-white">
-                            <h5 class="mb-0"><i class="fas fa-shield-alt me-2"></i>Moderators</h5>
-                        </div>
-                        <div class="card-body">
-                            <p class="text-muted small">
-                                The following members are forum moderators:
-                            </p>
-                            <ul class="list-unstyled">
-                                <li><i class="fas fa-user me-2 text-success"></i><a href="profile.php">admin</a></li>
-                                <li><i class="fas fa-user me-2 text-success"></i><a href="profile.php">moderator_john</a></li>
-                            </ul>
-                        </div>
-                    </div>
                     
-                    <!-- Subscribe to Forum -->
-                    <?php if (Session::isLoggedIn()): ?>
-                        <div class="card shadow">
-                            <div class="card-body">
-                                <button class="btn btn-outline-primary w-100">
-                                    <i class="fas fa-bell me-2"></i>Subscribe to Forum
-                                </button>
-                            </div>
-                        </div>
-                    <?php endif; ?>
+                    
+                    
                 </div>
             </div>
         </div>

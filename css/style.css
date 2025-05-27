@@ -3,7 +3,9 @@
     margin: 0;
     box-sizing: border-box;
 }
-
+.info-topic{
+    margin-bottom: 5rem!important;
+}
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #333;
