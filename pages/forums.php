@@ -9,15 +9,40 @@ Session::start();
 $database = new Database();
 $db = $database->getConnection();
 
-// Function to get all categories with their forums
-function getCategoriesWithForums($db) {
+// Get filter parameters
+$filter_categories = isset($_GET['categories']) ? explode(',', $_GET['categories']) : [];
+$filter_categories = array_map('intval', $filter_categories); // Convert to integers
+$filter_categories = array_filter($filter_categories); // Remove zeros
+
+// Function to get all categories
+function getAllCategories($db) {
+    $query = "SELECT * FROM categories ORDER BY display_order ASC";
+    $stmt = $db->prepare($query);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// Function to get categories with their forums (with optional filtering)
+function getCategoriesWithForums($db, $filter_categories = []) {
+    // Base query for categories
+    $category_where = '';
+    if (!empty($filter_categories)) {
+        $placeholders = str_repeat('?,', count($filter_categories) - 1) . '?';
+        $category_where = "WHERE c.category_id IN ($placeholders)";
+    }
+    
     $query = "SELECT c.*, 
               (SELECT COUNT(*) FROM forums f WHERE f.category_id = c.category_id) as forum_count 
               FROM categories c 
+              $category_where
               ORDER BY c.display_order ASC";
     
     $stmt = $db->prepare($query);
-    $stmt->execute();
+    if (!empty($filter_categories)) {
+        $stmt->execute($filter_categories);
+    } else {
+        $stmt->execute();
+    }
     
     $categories = [];
     
@@ -61,19 +86,36 @@ function getCategoriesWithForums($db) {
     return $categories;
 }
 
-// Get categories with forums
-$categories = getCategoriesWithForums($db);
+// Get all categories for filter dropdown
+$all_categories = getAllCategories($db);
 
-// Get total stats
-$stats_query = "SELECT 
-               (SELECT COUNT(*) FROM users) as user_count,
-               (SELECT COUNT(*) FROM topics) as topic_count,
-               (SELECT COUNT(*) FROM posts) as post_count,
-               (SELECT COUNT(*) FROM categories) as category_count,
-               (SELECT COUNT(*) FROM forums) as forum_count";
+// Get categories with forums (filtered if necessary)
+$categories = getCategoriesWithForums($db, $filter_categories);
 
-$stats_stmt = $db->prepare($stats_query);
-$stats_stmt->execute();
+// Get total stats (considering filters)
+if (!empty($filter_categories)) {
+    $placeholders = str_repeat('?,', count($filter_categories) - 1) . '?';
+    $stats_query = "SELECT 
+                   (SELECT COUNT(*) FROM users) as user_count,
+                   (SELECT COUNT(*) FROM topics t JOIN forums f ON t.forum_id = f.forum_id WHERE f.category_id IN ($placeholders)) as topic_count,
+                   (SELECT COUNT(*) FROM posts p JOIN topics t ON p.topic_id = t.topic_id JOIN forums f ON t.forum_id = f.forum_id WHERE f.category_id IN ($placeholders)) as post_count,
+                   (SELECT COUNT(*) FROM categories WHERE category_id IN ($placeholders)) as category_count,
+                   (SELECT COUNT(*) FROM forums WHERE category_id IN ($placeholders)) as forum_count";
+    
+    $stats_stmt = $db->prepare($stats_query);
+    $stats_stmt->execute(array_merge($filter_categories, $filter_categories, $filter_categories, $filter_categories));
+} else {
+    $stats_query = "SELECT 
+                   (SELECT COUNT(*) FROM users) as user_count,
+                   (SELECT COUNT(*) FROM topics) as topic_count,
+                   (SELECT COUNT(*) FROM posts) as post_count,
+                   (SELECT COUNT(*) FROM categories) as category_count,
+                   (SELECT COUNT(*) FROM forums) as forum_count";
+    
+    $stats_stmt = $db->prepare($stats_query);
+    $stats_stmt->execute();
+}
+
 $stats = $stats_stmt->fetch(PDO::FETCH_ASSOC);
 
 // Get latest registered user
@@ -87,6 +129,23 @@ $latest_user = $latest_user_stmt->fetch(PDO::FETCH_ASSOC);
 <head>
     <?php require_once("../parts/head.php")?>
     <title>Forums - CodeHub</title>
+    <style>
+        .category-filter {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .filter-checkbox {
+            margin-right: 0.5rem;
+        }
+        .filter-actions {
+            border-top: 1px solid #dee2e6;
+            padding-top: 0.75rem;
+            margin-top: 0.75rem;
+        }
+    </style>
 </head>
 <body>
     <?php require "../parts/header.php" ?>
@@ -105,25 +164,83 @@ $latest_user = $latest_user_stmt->fetch(PDO::FETCH_ASSOC);
                 <!-- Main Content -->
                 <div class="col-lg-9">
                     <div class="mb-4">
-                        <h1 class="mb-3"><i class="fas fa-comments me-2"></i>Forums</h1>
+                        <h1 class="mb-3">Forums</h1>
                         <p class="lead">Browse our development forums and join the conversation.</p>
+                    </div>
+                    
+                    <!-- Category Filter -->
+                    <div class="category-filter">
+                        <h5 class="mb-3">Filter by Categories</h5>
+                        <form method="GET" action="forums.php" id="filterForm">
+                            <div class="row">
+                                <?php foreach ($all_categories as $category): ?>
+                                    <div class="col-md-6 col-lg-4 mb-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input filter-checkbox" type="checkbox" 
+                                                   name="category_<?php echo $category['category_id']; ?>" 
+                                                   id="category_<?php echo $category['category_id']; ?>"
+                                                   value="<?php echo $category['category_id']; ?>"
+                                                   <?php echo in_array($category['category_id'], $filter_categories) ? 'checked' : ''; ?>
+                                                   onchange="updateFilter()">
+                                            <label class="form-check-label" for="category_<?php echo $category['category_id']; ?>">
+                                                <?php echo htmlspecialchars($category['name']); ?>
+                                            </label>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                            
+                            <div class="filter-actions">
+                                <button type="button" class="btn btn-sm btn-outline-primary me-2" onclick="selectAll()">
+                                    Select All
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary me-2" onclick="selectNone()">
+                                    Select None
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-success" onclick="resetFilter()">
+                                    Reset
+                                </button>
+                                
+                                <?php if (!empty($filter_categories)): ?>
+                                    <span class="ms-3 text-muted">
+                                        Showing <?php echo count($filter_categories); ?> of <?php echo count($all_categories); ?> categories
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+                            
+                            <input type="hidden" name="categories" id="categoriesInput" value="<?php echo implode(',', $filter_categories); ?>">
+                        </form>
                     </div>
                     
                     <?php if (empty($categories)): ?>
                         <div class="alert alert-info">
-                            <i class="fas fa-info-circle me-2"></i>No categories or forums have been created yet.
+                            <?php if (!empty($filter_categories)): ?>
+                                No forums found in the selected categories. Try adjusting your filter.
+                            <?php else: ?>
+                                No categories or forums have been created yet.
+                            <?php endif; ?>
                         </div>
                     <?php else: ?>
                         <?php foreach ($categories as $category): ?>
                             <div class="card shadow mb-4">
-                                <div class="card-header bg-dark text-white">
+                                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
                                     <h5 class="mb-0">
-                                        <?php if (!empty($category['icon'])): ?>
-                                            <i class="<?php echo htmlspecialchars($category['icon']); ?> me-2"></i>
-                                        <?php endif; ?>
-                                        <?php echo htmlspecialchars($category['name']); ?>
+                                        <a href="category.php?id=<?php echo $category['category_id']; ?>" class="text-white text-decoration-none">
+                                            <?php echo htmlspecialchars($category['name']); ?>
+                                        </a>
                                     </h5>
+                                    <small>
+                                        <a href="category.php?id=<?php echo $category['category_id']; ?>" class="text-white-50 text-decoration-none">
+                                            View All →
+                                        </a>
+                                    </small>
                                 </div>
+                                
+                                <?php if (!empty($category['description'])): ?>
+                                    <div class="card-body border-bottom">
+                                        <p class="mb-0 text-muted"><?php echo htmlspecialchars($category['description']); ?></p>
+                                    </div>
+                                <?php endif; ?>
                                 
                                 <?php if (empty($category['forums'])): ?>
                                     <div class="card-body">
@@ -146,11 +263,9 @@ $latest_user = $latest_user_stmt->fetch(PDO::FETCH_ASSOC);
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="forum-icon me-3">
-                                                                    <?php if (!empty($forum['icon'])): ?>
-                                                                        <i class="<?php echo htmlspecialchars($forum['icon']); ?> fa-2x text-primary"></i>
-                                                                    <?php else: ?>
-                                                                        <i class="fas fa-comments fa-2x text-primary"></i>
-                                                                    <?php endif; ?>
+                                                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; font-size: 20px; font-weight: bold;">
+                                                                        <?php echo strtoupper(substr($forum['name'], 0, 1)); ?>
+                                                                    </div>
                                                                 </div>
                                                                 <div>
                                                                     <h5 class="mb-1">
@@ -202,7 +317,7 @@ $latest_user = $latest_user_stmt->fetch(PDO::FETCH_ASSOC);
                     <?php if (Session::isAdmin()): ?>
                         <div class="text-end mt-3">
                             <a href="admin/manage-forums.php" class="btn btn-primary">
-                                <i class="fas fa-plus-circle me-2"></i>Manage Forums
+                                Manage Forums
                             </a>
                         </div>
                     <?php endif; ?>
@@ -213,7 +328,7 @@ $latest_user = $latest_user_stmt->fetch(PDO::FETCH_ASSOC);
                     <!-- Forum Statistics -->
                     <div class="card shadow mb-4">
                         <div class="card-header bg-dark text-white">
-                            <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Statistics</h5>
+                            <h5 class="mb-0">Statistics</h5>
                         </div>
                         <div class="card-body">
                             <ul class="list-group list-group-flush">
@@ -241,19 +356,41 @@ $latest_user = $latest_user_stmt->fetch(PDO::FETCH_ASSOC);
                         </div>
                     </div>
                     
-                    <!-- Online Users -->
-                    
+                    <!-- Quick Links -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header bg-dark text-white">
+                            <h5 class="mb-0">Quick Links</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="list-group list-group-flush">
+                                <?php foreach ($all_categories as $category): ?>
+                                    <a href="category.php?id=<?php echo $category['category_id']; ?>" class="list-group-item list-group-item-action">
+                                        <?php echo htmlspecialchars($category['name']); ?>
+                                    </a>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    </div>
                     
                     <!-- Forum Info -->
                     <div class="card shadow">
                         <div class="card-header bg-dark text-white">
-                            <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Forum Info</h5>
+                            <h5 class="mb-0">Forum Info</h5>
                         </div>
                         <div class="card-body">
                             <p>
                                 Welcome to our developer forums! Join our community to ask questions, share knowledge, and connect with fellow developers.
                             </p>
-                            
+                            <?php if ($latest_user): ?>
+                                <div class="border-top pt-2">
+                                    <p class="mb-0">
+                                        <strong>Newest Member:</strong> 
+                                        <a href="profile.php?username=<?php echo urlencode($latest_user['username']); ?>" class="text-decoration-none">
+                                            <?php echo htmlspecialchars($latest_user['username']); ?>
+                                        </a>
+                                    </p>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -262,5 +399,34 @@ $latest_user = $latest_user_stmt->fetch(PDO::FETCH_ASSOC);
     </main>
     
     <?php require "../parts/footer.php" ?>
+    
+    <script>
+        function updateFilter() {
+            const checkboxes = document.querySelectorAll('.filter-checkbox:checked');
+            const selectedCategories = Array.from(checkboxes).map(cb => cb.value);
+            document.getElementById('categoriesInput').value = selectedCategories.join(',');
+            
+            // Auto-submit form when filter changes
+            setTimeout(() => {
+                document.getElementById('filterForm').submit();
+            }, 100);
+        }
+        
+        function selectAll() {
+            const checkboxes = document.querySelectorAll('.filter-checkbox');
+            checkboxes.forEach(cb => cb.checked = true);
+            updateFilter();
+        }
+        
+        function selectNone() {
+            const checkboxes = document.querySelectorAll('.filter-checkbox');
+            checkboxes.forEach(cb => cb.checked = false);
+            updateFilter();
+        }
+        
+        function resetFilter() {
+            window.location.href = 'forums.php';
+        }
+    </script>
 </body>
 </html>
