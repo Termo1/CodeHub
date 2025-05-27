@@ -18,10 +18,10 @@ Session::start();
                         <a class="nav-link" href="/codehub/index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/codehub/pages/forums.php">Forums</a>
+                        <a class="nav-link" href="/codehub/pages/forum/forums.php">Forums</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/codehub/pages/topics.php">Recent Topics</a>
+                        <a class="nav-link" href="/codehub/pages/topic/topics.php">Recent Topics</a>
                     </li>
                 </ul>
                 
@@ -33,9 +33,9 @@ Session::start();
                                 <?php echo htmlspecialchars(Session::get('username')); ?>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <li><a class="dropdown-item" href="/codehub/pages/profile.php"><i class="fas fa-user me-2"></i>My Profile</a></li>
-                                <li><a class="dropdown-item" href="/codehub/pages/my-topics.php"><i class="fas fa-list me-2"></i>My Topics</a></li>
-                                <li><a class="dropdown-item" href="/codehub/pages/settings.php"><i class="fas fa-cog me-2"></i>Settings</a></li>
+                                <li><a class="dropdown-item" href="/codehub/pages/user/profile.php"><i class="fas fa-user me-2"></i>My Profile</a></li>
+                                <li><a class="dropdown-item" href="/codehub/pages/user/my-topics.php"><i class="fas fa-list me-2"></i>My Topics</a></li>
+                                <li><a class="dropdown-item" href="/codehub/pages/auth/settings.php"><i class="fas fa-cog me-2"></i>Settings</a></li>
                                 <?php if (Session::get('role') === 'admin' || Session::get('role') === 'moderator'): ?>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="/codehub/admin/index.php"><i class="fas fa-lock me-2"></i>Admin Panel</a></li>
@@ -45,8 +45,8 @@ Session::start();
                             </ul>
                         </div>
                     <?php else: ?>
-                        <a href="/codehub/pages/login.php" class="btn btn-outline-light me-2">Login</a>
-                        <a href="/codehub/pages/register.php" class="btn btn-primary">Register</a>
+                        <a href="/codehub/pages/auth/login.php" class="btn btn-outline-light me-2">Login</a>
+                        <a href="/codehub/pages/auth/register.php" class="btn btn-primary">Register</a>
                     <?php endif; ?>
                 </div>
             </div>

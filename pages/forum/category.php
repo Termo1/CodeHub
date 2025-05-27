@@ -1,6 +1,6 @@
 <?php
-require_once '../config/Database.php';
-require_once '../db/classes/Session.php';
+require_once '../../config/Database.php';
+require_once '../../db/classes/Session.php';
 
 // Start session
 Session::start();
@@ -132,11 +132,11 @@ if (Session::hasFlash('success')) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php require_once("../parts/head.php")?>
+    <?php require_once("../../parts/head.php")?>
     <title><?php echo htmlspecialchars($category['name']); ?> - CodeHub</title>
 </head>
 <body>
-    <?php require "../parts/header.php" ?>
+    <?php require "../../parts/header.php" ?>
     
     <main>
         <div class="container py-5">
@@ -440,6 +440,6 @@ if (Session::hasFlash('success')) {
         </div>
     </main>
     
-    <?php require "../parts/footer.php" ?>
+    <?php require "../../parts/footer.php" ?>
 </body>
 </html>

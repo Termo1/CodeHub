@@ -1,6 +1,6 @@
 <?php
-require_once '../config/Database.php';
-require_once '../db/classes/Session.php';
+require_once '../../config/Database.php';
+require_once '../../db/classes/Session.php';
 
 // Start session
 Session::start();
@@ -111,11 +111,11 @@ $success = Session::getFlash('success');
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php require_once("../parts/head.php")?>
+    <?php require_once("../../parts/head.php")?>
     <title><?php echo $viewing_own_topics ? 'My Topics' : htmlspecialchars($user['username']) . "'s Topics"; ?> - CodeHub</title>
 </head>
 <body>
-    <?php require "../parts/header.php" ?>
+    <?php require "../../parts/header.php" ?>
     
     <main>
         <div class="container py-5">
@@ -410,6 +410,6 @@ $success = Session::getFlash('success');
         </div>
     </main>
     
-    <?php require "../parts/footer.php" ?>
+    <?php require "../../parts/footer.php" ?>
 </body>
 </html>

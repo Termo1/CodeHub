@@ -1,7 +1,7 @@
 <?php
-require_once '../config/Database.php';
-require_once '../db/classes/User.php';
-require_once '../db/classes/Session.php';
+require_once '../../config/Database.php';
+require_once '../../db/classes/User.php';
+require_once '../../db/classes/Session.php';
 
 // Start session
 Session::start();
@@ -158,11 +158,11 @@ $extended_stats = getExtendedUserStats($db, $user_id);
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php require_once("../parts/head.php")?>
+    <?php require_once("../../parts/head.php")?>
     <title><?php echo htmlspecialchars($profile['username']); ?>'s Profile - CodeHub</title>
 </head>
 <body>
-    <?php require "../parts/header.php" ?>
+    <?php require "../../parts/header.php" ?>
     
     <main>
         <div class="container py-5">
@@ -433,6 +433,6 @@ $extended_stats = getExtendedUserStats($db, $user_id);
         </div>
     </main>
     
-    <?php require "../parts/footer.php" ?>
+    <?php require "../../parts/footer.php" ?>
 </body>
 </html>

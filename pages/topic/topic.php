@@ -1,7 +1,7 @@
 <?php
-require_once '../config/Database.php';
-require_once '../db/classes/Session.php';
-require_once '../db/classes/Validator.php';
+require_once '../../config/Database.php';
+require_once '../../db/classes/Session.php';
+require_once '../../db/classes/Validator.php';
 
 // Start session
 Session::start();
@@ -181,11 +181,11 @@ if (Session::hasFlash('success')) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php require_once("../parts/head.php")?>
+    <?php require_once("../../parts/head.php")?>
     <title><?php echo htmlspecialchars($topic['title']); ?> - CodeHub</title>
 </head>
 <body>
-    <?php require "../parts/header.php" ?>
+    <?php require "../../parts/header.php" ?>
     
     <main>
         <div class="container py-5">
@@ -227,7 +227,7 @@ if (Session::hasFlash('success')) {
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <p class="mb-0">
-                                <i class="fas fa-user me-1"></i> Started by <a href="profile.php?id=<?php echo $topic['user_id']; ?>"><?php echo htmlspecialchars($topic['creator_username']); ?></a>
+                                <i class="fas fa-user me-1"></i> Started by <a href="http://localhost/codehub/pages/user/profile.php?id=<?php echo $topic['user_id']; ?>"><?php echo htmlspecialchars($topic['creator_username']); ?></a>
                                 <span class="mx-2">|</span>
                                 <i class="far fa-calendar-alt me-1"></i> <?php echo date('F d, Y g:i a', strtotime($topic['created_at'])); ?>
                             </p>
@@ -439,7 +439,7 @@ if (Session::hasFlash('success')) {
         </div>
     </main>
     
-    <?php require "../parts/footer.php" ?>
+    <?php require "../../parts/footer.php" ?>
     
     <script>
         function quote(postId) {

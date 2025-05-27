@@ -1,5 +1,5 @@
 <?php
-require_once '../db/classes/Session.php';
+require_once '../../db/classes/Session.php';
 
 // Start session
 Session::start();

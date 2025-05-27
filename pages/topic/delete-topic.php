@@ -1,6 +1,6 @@
 <?php
-require_once '../config/Database.php';
-require_once '../db/classes/Session.php';
+require_once '../../config/Database.php';
+require_once '../../db/classes/Session.php';
 
 // Start session
 Session::start();
@@ -138,11 +138,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php require_once("../parts/head.php")?>
+    <?php require_once("../../parts/head.php")?>
     <title>Delete Topic - CodeHub</title>
 </head>
 <body>
-    <?php require "../parts/header.php" ?>
+    <?php require "../../parts/header.php" ?>
     
     <main>
         <div class="container py-5">
@@ -251,7 +251,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel'])) {
         </div>
     </main>
     
-    <?php require "../parts/footer.php" ?>
+    <?php require "../../parts/footer.php" ?>
     
     <script>
         // Enable/disable delete button based on checkbox

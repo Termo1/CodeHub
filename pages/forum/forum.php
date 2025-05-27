@@ -1,7 +1,7 @@
 <?php
-require_once '../config/Database.php';
-require_once '../db/classes/Session.php';
-//require_once '../db/classes/Topic.php';
+require_once '../../config/Database.php';
+require_once '../../db/classes/Session.php';
+require_once '../../db/classes/Topic.php';
 
 // Start session
 Session::start();
@@ -102,11 +102,11 @@ if (Session::hasFlash('success')) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php require_once("../parts/head.php")?>
+    <?php require_once("../../parts/head.php")?>
     <title><?php echo htmlspecialchars($forum['name']); ?> - CodeHub</title>
 </head>
 <body>
-    <?php require "../parts/header.php" ?>
+    <?php require "../../parts/header.php" ?>
     
     <main>
         <div class="container py-5">
@@ -150,13 +150,13 @@ if (Session::hasFlash('success')) {
                             <p class="lead"><?php echo htmlspecialchars($forum['description']); ?></p>
                             
                             <?php if (Session::isLoggedIn()): ?>
-                                <a href="create-topic.php?forum_id=<?php echo $forum_id; ?>" class="btn btn-primary">
+                                <a href="http://localhost/codehub/pages/topic/create-topic.php?forum_id=<?php echo $forum_id; ?>" class="btn btn-primary">
                                     <i class="fas fa-plus-circle me-2"></i>Create New Topic
                                 </a>
                             <?php else: ?>
                                 <div class="alert alert-info" role="alert">
                                     <i class="fas fa-info-circle me-2"></i>
-                                    <a href="login.php" class="alert-link">Login</a> or <a href="register.php" class="alert-link">Register</a> to create a new topic.
+                                    <a href="http://localhost/codehub/pages/auth/login.php" class="alert-link">Login</a> or <a href="http://localhost/codehub/pages/auth/register.php" class="alert-link">Register</a> to create a new topic.
                                 </div>
                             <?php endif; ?>
                         </div>
@@ -200,7 +200,7 @@ if (Session::hasFlash('success')) {
                                                         </div>
                                                         <div>
                                                             <h5 class="mb-1">
-                                                                <a href="topic.php?id=<?php echo $topic['topic_id']; ?>" class="text-decoration-none">
+                                                                <a href="http://localhost/codehub/pages/topic/topic.php?id=<?php echo $topic['topic_id']; ?>" class="text-decoration-none">
                                                                     <?php echo htmlspecialchars($topic['title']); ?>
                                                                 </a>
                                                                 <?php if ($topic['is_sticky']): ?>
@@ -211,7 +211,7 @@ if (Session::hasFlash('success')) {
                                                                 <?php endif; ?>
                                                             </h5>
                                                             <p class="mb-0 text-muted small">
-                                                                Started by <a href="profile.php?id=<?php echo $topic['user_id']; ?>" class="text-decoration-none"><?php echo htmlspecialchars($topic['creator_username']); ?></a>
+                                                                Started by <a href="http://localhost/codehub/pages/user/profile.php?id=<?php echo $topic['user_id']; ?>" class="text-decoration-none"><?php echo htmlspecialchars($topic['creator_username']); ?></a>
                                                                 on <?php echo date('M d, Y g:i a', strtotime($topic['created_at'])); ?>
                                                             </p>
                                                         </div>
@@ -314,11 +314,6 @@ if (Session::hasFlash('success')) {
                                 <a href="create-topic.php?forum_id=<?php echo $forum_id; ?>" class="list-group-item list-group-item-action <?php echo !Session::isLoggedIn() ? 'disabled' : ''; ?>">
                                     <i class="fas fa-plus-circle me-2"></i>New Topic
                                 </a>
-                                <?php if (Session::isAdmin()): ?>
-                                    <a href="admin/manage-forum.php?id=<?php echo $forum_id; ?>" class="list-group-item list-group-item-action">
-                                        <i class="fas fa-edit me-2"></i>Edit Forum
-                                    </a>
-                                <?php endif; ?>
                                 <a href="forums.php" class="list-group-item list-group-item-action">
                                     <i class="fas fa-arrow-left me-2"></i>Back to Forums
                                 </a>
@@ -334,6 +329,6 @@ if (Session::hasFlash('success')) {
         </div>
     </main>
     
-    <?php require "../parts/footer.php" ?>
+    <?php require "../../parts/footer.php" ?>
 </body>
 </html>

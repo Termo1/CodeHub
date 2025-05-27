@@ -1,6 +1,6 @@
 <?php
-require_once '../config/Database.php';
-require_once '../db/classes/Session.php';
+require_once '../../config/Database.php';
+require_once '../../db/classes/Session.php';
 
 // Start session
 Session::start();
@@ -127,7 +127,7 @@ $latest_user = $latest_user_stmt->fetch(PDO::FETCH_ASSOC);
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php require_once("../parts/head.php")?>
+    <?php require_once("../../parts/head.php")?>
     <title>Forums - CodeHub</title>
     <style>
         .category-filter {
@@ -148,7 +148,7 @@ $latest_user = $latest_user_stmt->fetch(PDO::FETCH_ASSOC);
     </style>
 </head>
 <body>
-    <?php require "../parts/header.php" ?>
+    <?php require "../../parts/header.php" ?>
     
     <main>
         <div class="container py-5">
@@ -398,7 +398,7 @@ $latest_user = $latest_user_stmt->fetch(PDO::FETCH_ASSOC);
         </div>
     </main>
     
-    <?php require "../parts/footer.php" ?>
+    <?php require "../../parts/footer.php" ?>
     
     <script>
         function updateFilter() {
