@@ -244,22 +244,24 @@ if (Session::hasFlash('success')) {
                         <div>
                             <?php if (Session::isLoggedIn() && !$topic['is_locked']): ?>
                                 <a href="#reply-form" class="btn btn-primary">
-                                    <i class="fas fa-reply me-2"></i>Reply
+                                    Reply
                                 </a>
                             <?php endif; ?>
                             
-                            <?php if (Session::isModerator() || Session::get('user_id') == $topic['user_id']): ?>
+                            <?php if (Session::isLoggedIn() && (Session::get('user_id') == $topic['user_id'] || Session::isModerator())): ?>
                                 <div class="btn-group ms-2">
                                     <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fas fa-cog"></i>
+                                        Actions
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="edit-topic.php?id=<?php echo $topic_id; ?>"><i class="fas fa-edit me-2"></i>Edit Topic</a></li>
+                                        <?php if (Session::get('user_id') == $topic['user_id'] || Session::isModerator()): ?>
+                                            <li><a class="dropdown-item" href="edit-topic.php?id=<?php echo $topic_id; ?>">Edit Topic</a></li>
+                                            <li><a class="dropdown-item text-danger" href="delete-topic.php?id=<?php echo $topic_id; ?>">Delete Topic</a></li>
+                                        <?php endif; ?>
                                         <?php if (Session::isModerator()): ?>
-                                            <li><a class="dropdown-item" href="admin/toggle-sticky.php?id=<?php echo $topic_id; ?>&return=topic"><i class="fas fa-thumbtack me-2"></i><?php echo $topic['is_sticky'] ? 'Unsticky' : 'Sticky'; ?></a></li>
-                                            <li><a class="dropdown-item" href="admin/toggle-lock.php?id=<?php echo $topic_id; ?>&return=topic"><i class="fas fa-lock me-2"></i><?php echo $topic['is_locked'] ? 'Unlock' : 'Lock'; ?></a></li>
                                             <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item text-danger" href="admin/delete-topic.php?id=<?php echo $topic_id; ?>" onclick="return confirm('Are you sure you want to delete this topic?');"><i class="fas fa-trash-alt me-2"></i>Delete Topic</a></li>
+                                            <li><a class="dropdown-item" href="admin/toggle-sticky.php?id=<?php echo $topic_id; ?>&return=topic"><?php echo $topic['is_sticky'] ? 'Unsticky' : 'Sticky'; ?></a></li>
+                                            <li><a class="dropdown-item" href="admin/toggle-lock.php?id=<?php echo $topic_id; ?>&return=topic"><?php echo $topic['is_locked'] ? 'Unlock' : 'Lock'; ?></a></li>
                                         <?php endif; ?>
                                     </ul>
                                 </div>
@@ -385,11 +387,7 @@ if (Session::hasFlash('success')) {
                         </div>
                     </div>
                     <div class="card-footer bg-light d-flex justify-content-between">
-                        <div>
-                            <a href="report-post.php?id=<?php echo $post['post_id']; ?>" class="text-muted small">
-                                <i class="fas fa-flag me-1"></i>Report
-                            </a>
-                        </div>
+                        
                         <div>
                             <span class="text-muted small">
                                 <i class="fas fa-thumbs-up me-1"></i>0
