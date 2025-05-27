@@ -324,17 +324,28 @@ if (Session::hasFlash('success')) {
                                 </button>
                             <?php endif; ?>
                             
-                            <?php if (Session::isModerator() || Session::get('user_id') == $post['user_id']): ?>
+                            <?php if (Session::isLoggedIn() && (Session::isModerator() || Session::get('user_id') == $post['user_id'])): ?>
                                 <div class="btn-group ms-1">
                                     <button type="button" class="btn btn-sm btn-outline-<?php echo $is_first_post ? 'light' : 'secondary'; ?> dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="fas fa-ellipsis-v"></i>
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="edit-post.php?id=<?php echo $post['post_id']; ?>"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                                        <?php if ($is_first_post): ?>
+                                            <li><a class="dropdown-item" href="edit-topic.php?id=<?php echo $topic_id; ?>"><i class="fas fa-edit me-2"></i>Edit Topic</a></li>
+                                        <?php else: ?>
+                                            <li><a class="dropdown-item" href="edit-post.php?id=<?php echo $post['post_id']; ?>"><i class="fas fa-edit me-2"></i>Edit Post</a></li>
+                                        <?php endif; ?>
+                                        
                                         <?php if (Session::isModerator() && !$is_first_post): ?>
                                             <li><a class="dropdown-item" href="admin/toggle-solution.php?id=<?php echo $post['post_id']; ?>&topic_id=<?php echo $topic_id; ?>"><i class="fas fa-check-circle me-2"></i><?php echo $post['is_solution'] ? 'Unmark as Solution' : 'Mark as Solution'; ?></a></li>
+                                        <?php endif; ?>
+                                        
+                                        <?php if (!$is_first_post): ?>
                                             <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item text-danger" href="admin/delete-post.php?id=<?php echo $post['post_id']; ?>&topic_id=<?php echo $topic_id; ?>" onclick="return confirm('Are you sure you want to delete this post?');"><i class="fas fa-trash-alt me-2"></i>Delete</a></li>
+                                            <li><a class="dropdown-item text-danger" href="delete-post.php?id=<?php echo $post['post_id']; ?>" onclick="return confirm('Are you sure you want to delete this post?');"><i class="fas fa-trash-alt me-2"></i>Delete Post</a></li>
+                                        <?php elseif (Session::get('user_id') == $post['user_id'] || Session::isModerator()): ?>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="delete-topic.php?id=<?php echo $topic_id; ?>" onclick="return confirm('Are you sure you want to delete this entire topic?');"><i class="fas fa-trash-alt me-2"></i>Delete Topic</a></li>
                                         <?php endif; ?>
                                     </ul>
                                 </div>
