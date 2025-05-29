@@ -192,10 +192,10 @@ if (Session::hasFlash('success')) {
             <!-- Breadcrumb -->
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/codehub/index.php">Home</a></li>
-                    <li class="breadcrumb-item"><a href="forums.php">Forums</a></li>
-                    <li class="breadcrumb-item"><a href="category.php?id=<?php echo $topic['category_id']; ?>"><?php echo htmlspecialchars($topic['category_name']); ?></a></li>
-                    <li class="breadcrumb-item"><a href="forum.php?id=<?php echo $topic['forum_id']; ?>"><?php echo htmlspecialchars($topic['forum_name']); ?></a></li>
+                    <li class="breadcrumb-item"><a href="../index.php">Home</a></li>
+                    <li class="breadcrumb-item"><a href="http://localhost/codehub/pages/forum/forums.php">Forums</a></li>
+                    <li class="breadcrumb-item"><a href="http://localhost/codehub/pages/forum/category.php?id=<?php echo $topic['category_id']; ?>"><?php echo htmlspecialchars($topic['category_name']); ?></a></li>
+                    <li class="breadcrumb-item"><a href="http://localhost/codehub/pages/forum/forum.php?id=<?php echo $topic['forum_id']; ?>"><?php echo htmlspecialchars($topic['forum_name']); ?></a></li>
                     <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($topic['title']); ?></li>
                 </ol>
             </nav>
@@ -227,7 +227,7 @@ if (Session::hasFlash('success')) {
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <p class="mb-0">
-                                <i class="fas fa-user me-1"></i> Started by <a href="http://localhost/codehub/pages/user/profile.php?id=<?php echo $topic['user_id']; ?>"><?php echo htmlspecialchars($topic['creator_username']); ?></a>
+                                <i class="fas fa-user me-1"></i> Started by <a href="profile.php?id=<?php echo $topic['user_id']; ?>"><?php echo htmlspecialchars($topic['creator_username']); ?></a>
                                 <span class="mx-2">|</span>
                                 <i class="far fa-calendar-alt me-1"></i> <?php echo date('F d, Y g:i a', strtotime($topic['created_at'])); ?>
                             </p>
@@ -323,7 +323,7 @@ if (Session::hasFlash('success')) {
                                         <?php endif; ?>
                                         
                                         <?php if (Session::isModerator() && !$is_first_post): ?>
-                                            <li><a class="dropdown-item" href="admin/toggle-solution.php?id=<?php echo $post['post_id']; ?>&topic_id=<?php echo $topic_id; ?>"><i class="fas fa-check-circle me-2"></i><?php echo $post['is_solution'] ? 'Unmark as Solution' : 'Mark as Solution'; ?></a></li>
+                                            <li><a class="dropdown-item" href="../admin/toggle-solution.php?id=<?php echo $post['post_id']; ?>&topic_id=<?php echo $topic_id; ?>"><i class="fas fa-check-circle me-2"></i><?php echo $post['is_solution'] ? 'Unmark as Solution' : 'Mark as Solution'; ?></a></li>
                                         <?php endif; ?>
                                         
                                         <?php if (!$is_first_post): ?>

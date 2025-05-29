@@ -1,5 +1,7 @@
 <?php
-require_once '../../classes/Session.php';
+require_once '../../db/classes/Session.php';
+require_once '../../config/Database.php';
+
 require_once '../../db/classes/Validator.php';
 
 // Start session
