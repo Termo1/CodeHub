@@ -29,29 +29,7 @@ $from_record_num = ($records_per_page * $page) - $records_per_page;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $topic_id = $_POST['topic_id'] ?? 0;
     
-    if (isset($_POST['toggle_sticky'])) {
-        $query = "UPDATE topics SET is_sticky = NOT is_sticky WHERE topic_id = :topic_id";
-        $stmt = $db->prepare($query);
-        $stmt->bindParam(':topic_id', $topic_id);
-        
-        if ($stmt->execute()) {
-            $success = 'Topic sticky status updated successfully!';
-        } else {
-            $error = 'Failed to update topic sticky status.';
-        }
-    }
     
-    if (isset($_POST['toggle_lock'])) {
-        $query = "UPDATE topics SET is_locked = NOT is_locked WHERE topic_id = :topic_id";
-        $stmt = $db->prepare($query);
-        $stmt->bindParam(':topic_id', $topic_id);
-        
-        if ($stmt->execute()) {
-            $success = 'Topic lock status updated successfully!';
-        } else {
-            $error = 'Failed to update topic lock status.';
-        }
-    }
     
     if (isset($_POST['delete_topic'])) {
         try {
@@ -375,12 +353,7 @@ if (Session::hasFlash('success')) {
                                                                 <?php if (strlen($topic['title']) > 60): ?>...<?php endif; ?>
                                                             </a>
                                                         </strong>
-                                                        <?php if ($topic['is_sticky']): ?>
-                                                            <span class="badge bg-warning text-dark ms-2">Sticky</span>
-                                                        <?php endif; ?>
-                                                        <?php if ($topic['is_locked']): ?>
-                                                            <span class="badge bg-secondary ms-2">Locked</span>
-                                                        <?php endif; ?>
+                                                       
                                                     </div>
                                                 </td>
                                                 <td>
@@ -395,12 +368,7 @@ if (Session::hasFlash('success')) {
                                                     </a>
                                                 </td>
                                                 <td>
-                                                    <?php if ($topic['is_sticky']): ?>
-                                                        <i class="fas fa-thumbtack text-warning" title="Sticky"></i>
-                                                    <?php endif; ?>
-                                                    <?php if ($topic['is_locked']): ?>
-                                                        <i class="fas fa-lock text-secondary" title="Locked"></i>
-                                                    <?php endif; ?>
+                    
                                                     <?php if (!$topic['is_sticky'] && !$topic['is_locked']): ?>
                                                         <i class="fas fa-comments text-primary" title="Normal"></i>
                                                     <?php endif; ?>
@@ -423,23 +391,7 @@ if (Session::hasFlash('success')) {
                                                             <i class="fas fa-eye"></i>
                                                         </a>
                                                         
-                                                        <!-- Toggle Sticky -->
-                                                        <form method="POST" style="display: inline;">
-                                                            <input type="hidden" name="topic_id" value="<?php echo $topic['topic_id']; ?>">
-                                                            <button type="submit" name="toggle_sticky" class="btn btn-sm btn-outline-<?php echo $topic['is_sticky'] ? 'warning' : 'secondary'; ?>" 
-                                                                    title="<?php echo $topic['is_sticky'] ? 'Remove Sticky' : 'Make Sticky'; ?>">
-                                                                <i class="fas fa-thumbtack"></i>
-                                                            </button>
-                                                        </form>
-                                                        
-                                                        <!-- Toggle Lock -->
-                                                        <form method="POST" style="display: inline;">
-                                                            <input type="hidden" name="topic_id" value="<?php echo $topic['topic_id']; ?>">
-                                                            <button type="submit" name="toggle_lock" class="btn btn-sm btn-outline-<?php echo $topic['is_locked'] ? 'secondary' : 'info'; ?>" 
-                                                                    title="<?php echo $topic['is_locked'] ? 'Unlock' : 'Lock'; ?>">
-                                                                <i class="fas fa-lock"></i>
-                                                            </button>
-                                                        </form>
+                                                       
                                                         
                                                         <!-- Delete Topic -->
                                                         <form method="POST" style="display: inline;">

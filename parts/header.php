@@ -20,9 +20,6 @@ Session::start();
                     <li class="nav-item">
                         <a class="nav-link" href="/codehub/pages/forum/forums.php">Forums</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/codehub/pages/topic/topics.php">Recent Topics</a>
-                    </li>
                 </ul>
                 
                 <div class="d-flex">

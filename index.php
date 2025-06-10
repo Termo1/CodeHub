@@ -118,11 +118,11 @@ if (empty($popular_categories)) {
                 <h1 class="display-4">CodeHub</h1>
                 <p class="lead">A community forum for developers to ask questions, share knowledge, and connect with peers</p>
                 <div class="mt-4">
-                    <a href="pages/forums.php" class="btn btn-primary btn-lg me-2">Browse Forums</a>
+                    <a href="pages/forum/forums.php" class="btn btn-primary btn-lg me-2">Browse Forums</a>
                     <?php if (!Session::isLoggedIn()): ?>
-                        <a href="pages/register.php" class="btn btn-outline-light btn-lg">Join Now</a>
+                        <a href="pages/auth/register.php" class="btn btn-outline-light btn-lg">Join Now</a>
                     <?php else: ?>
-                        <a href="pages/create-topic.php" class="btn btn-outline-light btn-lg">Create Topic</a>
+                        <a href="pages/topic/create-topic.php" class="btn btn-outline-light btn-lg">Create Topic</a>
                     <?php endif; ?>
                 </div>
             </div>
@@ -151,9 +151,9 @@ if (empty($popular_categories)) {
                                     <div class="d-flex justify-content-between align-items-center">
                                         <small class="text-muted"><?php echo number_format($category['topic_count']); ?> topics</small>
                                         <?php if (isset($category['category_id'])): ?>
-                                            <a href="pages/category.php?id=<?php echo $category['category_id']; ?>" class="btn btn-sm btn-outline-<?php echo $color; ?>">View Topics</a>
+                                            <a href="pages/forum/category.php?id=<?php echo $category['category_id']; ?>" class="btn btn-sm btn-outline-<?php echo $color; ?>">View Topics</a>
                                         <?php else: ?>
-                                            <a href="pages/forums.php" class="btn btn-sm btn-outline-<?php echo $color; ?>">Browse Forums</a>
+                                            <a href="pages/forum/forums.php" class="btn btn-sm btn-outline-<?php echo $color; ?>">Browse Forums</a>
                                         <?php endif; ?>
                                     </div>
                                 </div>
@@ -169,7 +169,7 @@ if (empty($popular_categories)) {
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2>Recent Discussions</h2>
-                    <a href="pages/topics.php" class="btn btn-sm btn-outline-secondary">View All</a>
+                    <a href="pages/forum/forums.php" class="btn btn-sm btn-outline-secondary">View All</a>
                 </div>
                 
                 <?php if (empty($recent_discussions)): ?>
@@ -178,15 +178,15 @@ if (empty($popular_categories)) {
                         <h5 class="text-muted">No recent discussions</h5>
                         <p class="text-muted">Be the first to start a conversation!</p>
                         <?php if (Session::isLoggedIn()): ?>
-                            <a href="pages/create-topic.php" class="btn btn-primary">Create First Topic</a>
+                            <a href="pages/topic/create-topic.php" class="btn btn-primary">Create First Topic</a>
                         <?php else: ?>
-                            <a href="pages/register.php" class="btn btn-primary">Join to Start Discussion</a>
+                            <a href="pages/auth/register.php" class="btn btn-primary">Join to Start Discussion</a>
                         <?php endif; ?>
                     </div>
                 <?php else: ?>
                     <div class="list-group">
                         <?php foreach ($recent_discussions as $topic): ?>
-                            <a href="pages/topic.php?id=<?php echo $topic['topic_id']; ?>" class="list-group-item list-group-item-action">
+                            <a href="pages/topic/topic.php?id=<?php echo $topic['topic_id']; ?>" class="list-group-item list-group-item-action">
                                 <div class="d-flex w-100 justify-content-between">
                                     <h5 class="mb-1">
                                         <?php echo htmlspecialchars($topic['title']); ?>
@@ -257,7 +257,7 @@ if (empty($popular_categories)) {
                             <div class="text-center mt-4">
                                 <p class="text-muted">
                                     <strong>Newest Member:</strong> 
-                                    <a href="pages/profile.php?username=<?php echo urlencode($stats['newest_member']); ?>" class="text-decoration-none">
+                                    <a href="pages/user/profile.php?username=<?php echo urlencode($stats['newest_member']); ?>" class="text-decoration-none">
                                         <?php echo htmlspecialchars($stats['newest_member']); ?>
                                     </a>
                                 </p>
@@ -283,7 +283,7 @@ if (empty($popular_categories)) {
                                                         <span class="badge bg-<?php echo $index == 0 ? 'warning' : ($index == 1 ? 'secondary' : ($index == 2 ? 'dark' : 'primary')); ?> me-2">
                                                             <?php echo $index + 1; ?>
                                                         </span>
-                                                        <a href="pages/profile.php?id=<?php echo $contributor['user_id']; ?>" class="text-decoration-none fw-bold">
+                                                        <a href="pages/user/profile.php?id=<?php echo $contributor['user_id']; ?>" class="text-decoration-none fw-bold">
                                                             <?php echo htmlspecialchars($contributor['username']); ?>
                                                         </a>
                                                     </div>
@@ -313,25 +313,25 @@ if (empty($popular_categories)) {
                         <div class="col-md-8">
                             <div class="row">
                                 <div class="col-md-3 mb-3">
-                                    <a href="pages/create-topic.php" class="btn btn-primary w-100">
+                                    <a href="pages/topic/create-topic.php" class="btn btn-primary w-100">
                                         <i class="fas fa-plus-circle mb-2 d-block"></i>
                                         Create Topic
                                     </a>
                                 </div>
                                 <div class="col-md-3 mb-3">
-                                    <a href="pages/my-topics.php" class="btn btn-outline-primary w-100">
+                                    <a href="pages/user/my-topics.php" class="btn btn-outline-primary w-100">
                                         <i class="fas fa-list mb-2 d-block"></i>
                                         My Topics
                                     </a>
                                 </div>
                                 <div class="col-md-3 mb-3">
-                                    <a href="pages/profile.php" class="btn btn-outline-primary w-100">
+                                    <a href="pages/user/profile.php" class="btn btn-outline-primary w-100">
                                         <i class="fas fa-user mb-2 d-block"></i>
                                         My Profile
                                     </a>
                                 </div>
                                 <div class="col-md-3 mb-3">
-                                    <a href="pages/forums.php" class="btn btn-outline-primary w-100">
+                                    <a href="pages/forum/forums.php" class="btn btn-outline-primary w-100">
                                         <i class="fas fa-comments mb-2 d-block"></i>
                                         Browse Forums
                                     </a>

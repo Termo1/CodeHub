@@ -311,7 +311,7 @@ if (Session::hasFlash('success')) {
                         </div>
                         <div class="card-body">
                             <div class="list-group">
-                                <a href="create-topic.php?forum_id=<?php echo $forum_id; ?>" class="list-group-item list-group-item-action <?php echo !Session::isLoggedIn() ? 'disabled' : ''; ?>">
+                                <a href="http://localhost/codehub/pages/topic/create-topic.php?forum_id=<?php echo $forum_id; ?>" class="list-group-item list-group-item-action <?php echo !Session::isLoggedIn() ? 'disabled' : ''; ?>">
                                     <i class="fas fa-plus-circle me-2"></i>New Topic
                                 </a>
                                 <a href="forums.php" class="list-group-item list-group-item-action">

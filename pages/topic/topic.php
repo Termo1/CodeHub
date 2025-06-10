@@ -192,7 +192,7 @@ if (Session::hasFlash('success')) {
             <!-- Breadcrumb -->
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="../index.php">Home</a></li>
+                    <li class="breadcrumb-item"><a href="../../index.php">Home</a></li>
                     <li class="breadcrumb-item"><a href="http://localhost/codehub/pages/forum/forums.php">Forums</a></li>
                     <li class="breadcrumb-item"><a href="http://localhost/codehub/pages/forum/category.php?id=<?php echo $topic['category_id']; ?>"><?php echo htmlspecialchars($topic['category_name']); ?></a></li>
                     <li class="breadcrumb-item"><a href="http://localhost/codehub/pages/forum/forum.php?id=<?php echo $topic['forum_id']; ?>"><?php echo htmlspecialchars($topic['forum_name']); ?></a></li>

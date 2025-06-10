@@ -71,7 +71,23 @@ footer a:hover {
 .border.rounded:hover {
     transform: scale(1.05);
 }
-
+ .admin-sidebar {
+    background: #2c3e50;
+    min-height: 100vh;
+}
+    .admin-nav .nav-link {
+    color: #ecf0f1;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+    .admin-nav .nav-link:hover {
+    background: #34495e;
+    color: white;
+}
+    .admin-nav .nav-link.active {
+    background: #3498db;
+    color: white;
+}
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .display-4 {
