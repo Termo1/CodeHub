@@ -41,7 +41,7 @@ Session::start();
                                 <li><a class="dropdown-item" href="/codehub/admin/index.php"><i class="fas fa-lock me-2"></i>Admin Panel</a></li>
                                 <?php endif; ?>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="/codehub/pages/logout.php"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                                <li><a class="dropdown-item" href="/codehub/pages/auth/logout.php"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                             </ul>
                         </div>
                     <?php else: ?>
